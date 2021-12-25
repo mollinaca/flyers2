@@ -7,3 +7,4 @@ eggs/
 .eggs/
 __pycache__/
 */__pycache__/
+*/*/__pycache__/
