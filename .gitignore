@@ -1,3 +1,9 @@
+.Python
 Pipfile.lock
-flyers2.egg-info
-dist
+*.egg-info
+*.egg
+dist/
+eggs/
+.eggs/
+__pycache__/
+*/__pycache__/
