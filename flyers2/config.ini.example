@@ -1,0 +1,9 @@
+[notify]
+slack_webhook =     https://hooks.slack.com/services/Txxxxxxxx/aaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbb
+slack_webhook_dev = https://hooks.slack.com/services/Tyyyyyyyy/ccccccccccc/dddddddddddddddddddddddd
+e_mail = test@example.com
+
+[target]
+shops = ['https://shopurl1.example.com',
+         'https://shopurl2.example.com'
+]
