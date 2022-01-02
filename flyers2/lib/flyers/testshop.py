@@ -1,12 +1,13 @@
 """
 for development mode
+return stab data
 """
 
 
 def get_testshop_flyers_pages(url: str) -> list:
     ret = [
         "https://test-shopurl.example.com/flyers/flyers1",
-        "https://test-shopurl.example.com/flyers/flyers",
+        "https://test-shopurl.example.com/flyers/flyers2",
     ]
     return ret
 
@@ -21,5 +22,5 @@ def get_testshop_flyers_images(pages: str) -> list:
 
 def get_testshop_flyers(url: str):
     pages = get_testshop_flyers_pages(url)
-    imgs = get_testshop_flyers_images(pages)
-    return [pages, imgs]
+    # imgs = get_testshop_flyers_images(pages)
+    return pages
