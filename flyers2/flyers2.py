@@ -1,56 +1,77 @@
-def hello(name):
-    print("Hello, %s!" % name)
+import configparser
+import json
+import os
+import pathlib
+import time
+from .lib.flyers import york, kurashiru, tokubai
+from .lib.notify import slack
 
 
 def main():
-    # 自分テスト用
-    #    from .lib import libtest as lt
-    from .lib import libtest
-    from .lib.flyers import testshop, york
 
-    hello("test")
-    libtest.libtestf()
-
-    ###################
-    #  メイン処理 #
-    ###################
-
-    #  module import #
-    import configparser
-    import json
-    import pathlib
-
-    # valiables #
     here = pathlib.Path(__file__).resolve().parent
-    #    CONFIG_FILE = str(here) + "/config.ini"
-    CONFIG_FILE = str(here) + "/config_dev.ini"  # dev mode
+    CONFIG_FILE = str(here) + "/config.ini"
+    # CONFIG_FILE = str(here) + "/config_dev.ini"  # for development
 
-    #  設定の読み込み #
     cfg = configparser.ConfigParser()
     cfg.read(CONFIG_FILE)
-    print(cfg.sections())
-    print(cfg["notify"]["slack_webhook"])
+    #    SLACK_WEBHOOK = cfg["notify"]["slack_webhook"]
+    SLACK_BOT_TOKEN = cfg["notify"]["slack_bot_token"]
+    SLACK_CHANNEL = cfg["notify"]["slack_channel"]
 
     # 前回データ取得
-
-    # 店舗単位処理
+    if not os.path.exists("last.json"):
+        last_flyers = []
+    else:
+        json_open = open("last_dev.json", "r")
+        last = json.load(json_open)
+        last_flyers = last["flyers"]
+    new_flyers = []
+    new_time = time.time()
 
     shop_urls = json.loads(cfg["target"]["shops"])
     for shop_url in shop_urls:
-        print(shop_url)
+        # print(shop_url)
 
-        # shop_url ごとの分岐
-        if "test-shopurl" in shop_url:  # 開発用
-            flyers = testshop.get_testshop_flyers(shop_url)
-            print(flyers)
+        if "test-shopurl" in shop_url:  # for development
+            pass
 
-        elif "york" in shop_url:
-            york.yorkf()
+        elif "york" in shop_url or "kurashiru" in shop_url or "tokubai" in shop_url:
+            """
+            チラシページからチラシURLを取得しファイルをDLできる
+            """
+            if "york" in shop_url:
+                flyers = york.get_flyers(shop_url)
+            elif "kurashiru" in shop_url:
+                flyers = kurashiru.get_flyers(shop_url)
+            elif "tokubai" in shop_url:
+                flyers = tokubai.get_flyers(shop_url)
+
+            for flyer_url, img_path in flyers.items():
+                if img_path not in last_flyers:
+                    response = slack.file_upload(
+                        SLACK_BOT_TOKEN, SLACK_CHANNEL, img_path, flyer_url
+                    )
+                    if response["ok"]:
+                        new_flyers.append(img_path)
+                    else:
+                        # 60 sec sleep and retry only once
+                        time.sleep(60)
+                        response = slack.file_upload(
+                            SLACK_BOT_TOKEN, SLACK_CHANNEL, img_path, flyer_url
+                        )
+                        if response["ok"]:
+                            new_flyers.append(img_path)
+                        else:
+                            pass
+                os.remove(img_path)
 
         else:
             pass
 
-    hello("end")
+    new_flyers_json = {"time": new_time, "flyers": new_flyers}
+    with open("last.json", "w") as f:
+        json.dump(new_flyers_json, f, indent=4)
 
 
 if __name__ == "__main__":
