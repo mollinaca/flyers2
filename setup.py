@@ -7,7 +7,7 @@ __version__ = "0.3"
 setup(
     name="flyers2",
     version=__version__,
-    description="getting shops flyers script",
+    description="Scripts to collect flyers from stores.",
     author="mollinaca",
     author_email="mail@mollinaca.dev",
     url="https://github.com/mollinaca/flyers2",
