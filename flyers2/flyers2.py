@@ -15,11 +15,9 @@ def main():
 
     cfg = configparser.ConfigParser()
     cfg.read(CONFIG_FILE)
-    #    SLACK_WEBHOOK = cfg["notify"]["slack_webhook"]
     SLACK_BOT_TOKEN = cfg["notify"]["slack_bot_token"]
     SLACK_CHANNEL = cfg["notify"]["slack_channel"]
 
-    # 前回データ取得
     if not os.path.exists("last.json"):
         last_flyers = []
     else:
@@ -31,21 +29,19 @@ def main():
 
     shop_urls = json.loads(cfg["target"]["shops"])
     for shop_url in shop_urls:
-        # print(shop_url)
 
         if "test-shopurl" in shop_url:  # for development
             pass
 
         elif "york" in shop_url or "kurashiru" in shop_url or "tokubai" in shop_url:
-            """
-            チラシページからチラシURLを取得しファイルをDLできる
-            """
             if "york" in shop_url:
                 flyers = york.get_flyers(shop_url)
             elif "kurashiru" in shop_url:
                 flyers = kurashiru.get_flyers(shop_url)
             elif "tokubai" in shop_url:
                 flyers = tokubai.get_flyers(shop_url)
+            else:
+                continue
 
             for flyer_url, img_path in flyers.items():
                 if img_path not in last_flyers:
@@ -64,6 +60,7 @@ def main():
                             new_flyers.append(img_path)
                         else:
                             pass
+                            # if fail twice, give up
                 os.remove(img_path)
 
         else:
