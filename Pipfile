@@ -6,8 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-3 = "*"
+slack-sdk = "*"
 requests = "*"
+beautifulsoup4 = "*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.6"
