@@ -2,6 +2,7 @@
 Pipfile.lock
 *.egg-info
 *.egg
+*.json
 dist/
 eggs/
 .eggs/
