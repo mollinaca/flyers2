@@ -61,6 +61,9 @@ def main():
                         else:
                             pass
                             # if fail twice, give up
+                else:
+                    new_flyers.append(img_path)
+
                 os.remove(img_path)
 
         else:
