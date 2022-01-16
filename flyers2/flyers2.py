@@ -3,7 +3,7 @@ import json
 import os
 import pathlib
 import time
-from .lib.flyers import york, yaoko, kurashiru, tokubai, shufoo
+from .lib.flyers import york, yaoko, kurashiru, tokubai
 from .lib.notify import slack
 
 
@@ -33,9 +33,9 @@ def main():
         if "test-shopurl" in shop_url:  # for development
             pass
 
-        elif "shufoo" in shop_url:
-            print(shop_url)
-            shufoo.get_flyers(shop_url)
+        #        elif "shufoo" in shop_url:
+        #            print(shop_url)
+        #            shufoo.get_flyers(shop_url)
 
         elif (
             "york" in shop_url
