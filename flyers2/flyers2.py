@@ -21,7 +21,7 @@ def main():
     if not os.path.exists("last.json"):
         last_flyers = []
     else:
-        json_open = open("last_dev.json", "r")
+        json_open = open("last.json", "r")
         last = json.load(json_open)
         last_flyers = last["flyers"]
     new_flyers = []
