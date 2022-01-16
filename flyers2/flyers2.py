@@ -3,7 +3,7 @@ import json
 import os
 import pathlib
 import time
-from .lib.flyers import york, kurashiru, tokubai
+from .lib.flyers import york, yaoko, kurashiru, tokubai, shufoo
 from .lib.notify import slack
 
 
@@ -21,7 +21,7 @@ def main():
     if not os.path.exists("last.json"):
         last_flyers = []
     else:
-        json_open = open("last.json", "r")
+        json_open = open("last_dev.json", "r")
         last = json.load(json_open)
         last_flyers = last["flyers"]
     new_flyers = []
@@ -33,9 +33,20 @@ def main():
         if "test-shopurl" in shop_url:  # for development
             pass
 
-        elif "york" in shop_url or "kurashiru" in shop_url or "tokubai" in shop_url:
+        elif "shufoo" in shop_url:
+            print(shop_url)
+            shufoo.get_flyers(shop_url)
+
+        elif (
+            "york" in shop_url
+            or "yaoko-net" in shop_url
+            or "kurashiru" in shop_url
+            or "tokubai" in shop_url
+        ):
             if "york" in shop_url:
                 flyers = york.get_flyers(shop_url)
+            elif "yaoko-net" in shop_url:
+                flyers = yaoko.get_flyers(shop_url)
             elif "kurashiru" in shop_url:
                 flyers = kurashiru.get_flyers(shop_url)
             elif "tokubai" in shop_url:
