@@ -77,12 +77,18 @@ def main():
 
                 os.remove(img_path)
 
+        #        elif "rogers" in shop_url:
+        #            flyers = rogers.get_flyers(shop_url)
+        #            print(flyers)
+
         else:
             pass
 
     new_flyers_json = {"time": new_time, "flyers": new_flyers}
     with open("last.json", "w") as f:
         json.dump(new_flyers_json, f, indent=4)
+
+    slack.file_upload(SLACK_BOT_TOKEN, SLACK_CHANNEL, "last.json", "last.json")
 
 
 if __name__ == "__main__":
