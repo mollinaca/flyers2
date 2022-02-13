@@ -1,7 +1,7 @@
 # flyers2
 
-Scripts to collect flyers from stores and post to slack.
-This is a script for my hobby.
+This is a my hobby script:)
+collect flyers from stores website and post to your slack.
 
 ## how to use
 
@@ -9,12 +9,12 @@ This is a script for my hobby.
 # git clone <this repo>
 # cd <dir>
 # cp config_example.ini config.ini
-# <set up your slack token and target shopurls>
+    -> <set "your slack token" and "target shopurls" to config.ini>
 # python -m flyers2
 ```
  -> post flyers to your slack channels :clap:
 
-## Workable flyers pages
+## Workable flyers sites
 
 ### tokubai
 
@@ -23,6 +23,19 @@ https://tokubai.co.jp/
 ### kurashiru
 
 https://chirashi.kurashiru.com/
+
+### yorkmart
+
+https://www.york-inc.com/
+
+### yaoko
+
+https://www.yaoko-net.com/
+
+### rogers
+
+https://www.rogers.co.jp/
+
 
 ## Caution
 
