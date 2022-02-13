@@ -7,8 +7,9 @@ verify_ssl = true
 
 [packages]
 slack-sdk = "*"
+pdf2image = "*"
 requests = "*"
 beautifulsoup4 = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
