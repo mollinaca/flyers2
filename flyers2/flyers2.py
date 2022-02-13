@@ -3,7 +3,7 @@ import json
 import os
 import pathlib
 import time
-from .lib.flyers import york, yaoko, kurashiru, tokubai
+from .lib.flyers import york, yaoko, kurashiru, tokubai, rogers
 from .lib.notify import slack
 
 
@@ -22,6 +22,7 @@ def main():
         last_flyers = []
     else:
         json_open = open("last.json", "r")
+        # json_open = open("last.json", "r")  # for development
         last = json.load(json_open)
         last_flyers = last["flyers"]
     new_flyers = []
@@ -32,10 +33,6 @@ def main():
 
         if "test-shopurl" in shop_url:  # for development
             pass
-
-        #        elif "shufoo" in shop_url:
-        #            print(shop_url)
-        #            shufoo.get_flyers(shop_url)
 
         elif (
             "york" in shop_url
@@ -77,9 +74,31 @@ def main():
 
                 os.remove(img_path)
 
-        #        elif "rogers" in shop_url:
-        #            flyers = rogers.get_flyers(shop_url)
-        #            print(flyers)
+        elif "rogers" in shop_url:
+            flyers = rogers.get_flyers(shop_url)
+            for flyer_url, img_paths in flyers.items():
+                for img_path in img_paths:
+                    if img_path not in last_flyers:
+                        response = slack.file_upload(
+                            SLACK_BOT_TOKEN, SLACK_CHANNEL, img_path, flyer_url
+                        )
+                        if response["ok"]:
+                            new_flyers.append(img_path)
+                        else:
+                            # 60 sec sleep and retry only once
+                            time.sleep(60)
+                            response = slack.file_upload(
+                                SLACK_BOT_TOKEN, SLACK_CHANNEL, img_path, flyer_url
+                            )
+                            if response["ok"]:
+                                new_flyers.append(img_path)
+                            else:
+                                pass
+                                # if fail twice, give up
+                    else:
+                        new_flyers.append(img_path)
+
+                    os.remove(img_path)
 
         else:
             pass
@@ -87,8 +106,6 @@ def main():
     new_flyers_json = {"time": new_time, "flyers": new_flyers}
     with open("last.json", "w") as f:
         json.dump(new_flyers_json, f, indent=4)
-
-    slack.file_upload(SLACK_BOT_TOKEN, SLACK_CHANNEL, "last.json", "last.json")
 
 
 if __name__ == "__main__":
