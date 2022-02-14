@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 from pdf2image import convert_from_path
@@ -47,5 +48,6 @@ def get_flyers(url: str) -> dict:
         image.save(filename_png, "PNG")
         ret_images.append(filename_png)
 
+    os.remove(filename)
     ret[url] = ret_images
     return ret
