@@ -109,8 +109,8 @@ def get_flyers_urls(shop_urls: dict) -> dict:
 def main():
 
     here = pathlib.Path(__file__).resolve().parent
-    # CONFIG_FILE = str(here) + "/config.ini"
-    CONFIG_FILE = str(here) + "/config_dev.ini"  # for development
+    CONFIG_FILE = str(here) + "/config.ini"
+    # CONFIG_FILE = str(here) + "/config_dev.ini"  # for development
 
     cfg = configparser.ConfigParser()
     cfg.read(CONFIG_FILE)
