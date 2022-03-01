@@ -40,6 +40,8 @@ def dl(url: str) -> str:
     download the file and return filename
     """
     filename = os.path.basename(url)
+    if 64 < len(filename):
+        filename = filename[:60] + filename.split(".")[-1]
     res = requests.get(url, stream=True)
     with open(filename, mode="wb") as f:
         res.raw.decode_content = True
